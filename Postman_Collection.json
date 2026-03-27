@@ -1,0 +1,433 @@
+{
+  "info": {
+    "_postman_id": "12345678-1234-1234-1234-123456789012",
+    "name": "API Pedidos de Compra - IndustriALL",
+    "description": "Coleção completa de endpoints para API de Pedidos de Compra com Cadeia de Aprovações Hierárquica",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "USUARIOS",
+      "item": [
+        {
+          "name": "Criar Usuario",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"João Silva\",\n  \"email\": \"joao@empresa.com\",\n  \"userRole\": \"Elaborator\",\n  \"department\": \"Suprimentos\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            },
+            "description": "Cria um novo usuário. Roles válidos: Elaborator, Supplies, Manager, Director"
+          }
+        },
+        {
+          "name": "Listar Todos os Usuarios",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users"]
+            },
+            "description": "Retorna lista de todos os usuários"
+          }
+        },
+        {
+          "name": "Buscar Usuario por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            },
+            "description": "Retorna detalhes de um usuário específico"
+          }
+        },
+        {
+          "name": "Listar Aprovadores",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/approvers/list",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "approvers", "list"]
+            },
+            "description": "Retorna apenas usuários que são aprovadores (Supplies, Manager, Director)"
+          }
+        },
+        {
+          "name": "Listar Usuarios por Papel",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/role/Manager",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "role", "Manager"]
+            },
+            "description": "Retorna usuários de um papel específico. Papéis: Elaborator, Supplies, Manager, Director"
+          }
+        },
+        {
+          "name": "Atualizar Usuario",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"fullName\": \"João Silva Junior\",\n  \"department\": \"Novo Departamento\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            },
+            "description": "Atualiza dados de um usuário"
+          }
+        },
+        {
+          "name": "Deletar Usuario",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/users/{{user_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "users", "{{user_id}}"]
+            },
+            "description": "Remove um usuário do sistema"
+          }
+        }
+      ]
+    },
+    {
+      "name": "PEDIDOS",
+      "item": [
+        {
+          "name": "Criar Pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"elaboratorId\": \"{{elaborator_id}}\",\n  \"orderNumber\": \"PO-001\",\n  \"description\": \"Compra de material de escritório\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders"]
+            },
+            "description": "Cria um novo pedido em status Draft"
+          }
+        },
+        {
+          "name": "Listar Todos os Pedidos",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders"]
+            },
+            "description": "Retorna lista de todos os pedidos"
+          }
+        },
+        {
+          "name": "Buscar Pedido por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}"]
+            },
+            "description": "Retorna detalhes completos de um pedido (itens, aprovações, histórico)"
+          }
+        },
+        {
+          "name": "Listar Pedidos por Status",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/status/InApproval",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "status", "InApproval"]
+            },
+            "description": "Status válidos: Draft, InApproval, Approved, Rejected, Cancelled"
+          }
+        },
+        {
+          "name": "Listar Pedidos Aguardando Aprovacao",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/pending/approvals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "pending", "approvals"]
+            },
+            "description": "Retorna pedidos com status InApproval"
+          }
+        },
+        {
+          "name": "Listar Pedidos de um Usuario",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/user/{{elaborator_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "user", "{{elaborator_id}}"]
+            },
+            "description": "Retorna todos os pedidos criados por um usuário específico"
+          }
+        },
+        {
+          "name": "Editar Pedido (Draft)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Descrição atualizada do pedido\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}"]
+            },
+            "description": "Edita um pedido. Apenas funciona se status for Draft"
+          }
+        },
+        {
+          "name": "Adicionar Item ao Pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"Notebook Dell\",\n  \"quantity\": 5,\n  \"unitPrice\": 3000\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/items",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "items"]
+            },
+            "description": "Adiciona um novo item ao pedido. Apenas funciona em Draft"
+          }
+        },
+        {
+          "name": "Submeter Pedido para Aprovacao",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"elaboratorId\": \"{{elaborator_id}}\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/submit",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "submit"]
+            },
+            "description": "Submete pedido para aprovação. Calcula alçada e cria cadeia de aprovações"
+          }
+        },
+        {
+          "name": "Cancelar Pedido",
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"userId\": \"{{user_id}}\",\n  \"reason\": \"Compra não é mais necessária\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}"]
+            },
+            "description": "Cancela um pedido"
+          }
+        }
+      ]
+    },
+    {
+      "name": "APROVACOES",
+      "item": [
+        {
+          "name": "Visualizar Cadeia de Aprovacoes",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/approvals",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "approvals"]
+            },
+            "description": "Retorna a sequência de aprovações necessárias"
+          }
+        },
+        {
+          "name": "Aprovar Pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approverId\": \"{{approver_id}}\",\n  \"comments\": \"Orçamento disponível. Aprovado!\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/approve",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "approve"]
+            },
+            "description": "Aprova o pedido no passo atual da cadeia de aprovação"
+          }
+        },
+        {
+          "name": "Rejeitar Pedido",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approverId\": \"{{approver_id}}\",\n  \"reason\": \"Valor acima do orçamento disponível\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/reject",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "reject"]
+            },
+            "description": "Rejeita o pedido. Muda status para Rejected"
+          }
+        },
+        {
+          "name": "Solicitar Revisao",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"approverId\": \"{{approver_id}}\",\n  \"reason\": \"Precisa detalhar melhor o objetivo da compra\"\n}"
+            },
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/request-revision",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "request-revision"]
+            },
+            "description": "Solicita revisão. Pedido volta a Draft e cadeia é resetada"
+          }
+        }
+      ]
+    },
+    {
+      "name": "HISTORICO",
+      "item": [
+        {
+          "name": "Visualizar Historico do Pedido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{base_url}}/api/purchaseorders/{{order_id}}/history",
+              "host": ["{{base_url}}"],
+              "path": ["api", "purchaseorders", "{{order_id}}", "history"]
+            },
+            "description": "Retorna o histórico completo de ações do pedido (auditoria)"
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://localhost:5235",
+      "type": "string"
+    },
+    {
+      "key": "user_id",
+      "value": "COLOQUE-ID-DO-USUARIO-AQUI",
+      "type": "string"
+    },
+    {
+      "key": "elaborator_id",
+      "value": "COLOQUE-ID-DO-ELABORADOR-AQUI",
+      "type": "string"
+    },
+    {
+      "key": "approver_id",
+      "value": "COLOQUE-ID-DO-APROVADOR-AQUI",
+      "type": "string"
+    },
+    {
+      "key": "order_id",
+      "value": "COLOQUE-ID-DO-PEDIDO-AQUI",
+      "type": "string"
+    }
+  ]
+}
